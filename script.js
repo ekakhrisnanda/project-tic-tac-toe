@@ -73,7 +73,10 @@ function GameController(
 
     printNewRound()
 
-    return { playRound, getActivePlayer };
+    return { 
+        playRound, 
+        getActivePlayer, 
+        getBoard: board.getBoard };
 }
 
 function GamePlay() {

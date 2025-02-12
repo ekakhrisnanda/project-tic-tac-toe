@@ -1,30 +1,44 @@
 function GameBoard() {
-
     const board = [
-        ['', '', ''],
-        ['', '', ''],
-        ['', '', '']
+        [Cell(), Cell(), Cell()],
+        [Cell(), Cell(), Cell()],
+        [Cell(), Cell(), Cell()]
     ];
 
     const getBoard = () => board;
 
     const updateCell = (row, col, player) => {
-        if(board[row][col] === '') {
-            board[row][col] === player;
+        if(board[row][col].getValue() === '') {
+            board[row][col].addValue(player);
             return true;
         }
         return false;
     }
 
-    return { getBoard, updateCell };
+    const printBoard = () => {
+        const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
+        console.log(boardWithCellValues);
+    };
+
+    return { getBoard, updateCell, printBoard };
+}
+
+function Cell() {
+    let value = '';
+
+    const addValue = (player) => {
+        value = player;
+    }
+
+    const getValue = () => value;
+
+    return { addValue, getValue };
 }
 
 function GameController(
     playerOneName = 'Player One',
     playerTwoName = 'Player Two'
 ) {
-    const board = GameBoard();
-
     const players = [
         {
             name: playerOneName,
@@ -44,10 +58,5 @@ function GameController(
 
     const getActivePlayer = () => activePlayer;
 
-    const playRound = (row, col) => {
-        board.updateCell(row, col, getActivePlayer().value);
-        switchPlayerTurn();
-    }
-
-    return { switchPlayerTurn, getActivePlayer, playRound };
+    return { switchPlayerTurn, getActivePlayer };
 }

@@ -11,6 +11,8 @@ function GameBoard() {
         if(board[row][col].getValue() === '') {
             board[row][col].addValue(player);
             return true;
+        } else if (board[row][col].getValue() !== '') {
+            return;
         }
         return false;
     }
@@ -76,7 +78,8 @@ function GameController(
     return { 
         playRound, 
         getActivePlayer, 
-        getBoard: board.getBoard };
+        getBoard: board.getBoard 
+    };
 }
 
 function GamePlay() {
@@ -103,26 +106,26 @@ function GamePlay() {
                 cell.classList.add('cell');
                 cell.dataset.column = index;
                 cell.textContent = column.getValue();
-                boardDisplay.appendChild(cell);
+                rowString.appendChild(cell);
             })
         })
+    }
 
-        function clickHandlerBoard(e) {
-            const selectedRow = e.target.dataset.row;
-            const selectedColumn = e.target.dataset.column;
+    function clickHandlerBoard(e) {
+        const selectedRow = e.target.closest('[data-row]').dataset.row;
+        const selectedColumn = e.target.closest('[data-column]').dataset.column;
 
-            if (!selectedRow && !selectedColumn) {
-                return;
-            }
-
-            game.playRound(selectedRow, selectedColumn);
-            updateDisplay();
+        if (!selectedRow && !selectedColumn) {
+            return;
         }
 
-        boardDisplay.addEventListener('click', clickHandlerBoard);
-
+        game.playRound(selectedRow, selectedColumn);
         updateDisplay();
     }
+
+    boardDisplay.addEventListener('click', clickHandlerBoard);
+    
+    updateDisplay();
 }
 
 GamePlay();

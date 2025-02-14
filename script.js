@@ -11,8 +11,6 @@ function GameBoard() {
         if(board[row][col].getValue() === '') {
             board[row][col].addValue(player);
             return true;
-        } else if (board[row][col].getValue() !== '') {
-            return;
         }
         return false;
     }
@@ -68,12 +66,11 @@ function GameController(
     };
 
     const playRound = (row, col) => {
-        board.updateCell(row, col, getActivePlayer().value);
-        switchPlayerTurn();
-        printNewRound();
+        if(board.updateCell(row, col, getActivePlayer().value)) {
+            switchPlayerTurn();
+            printNewRound();
+        }
     };
-
-    printNewRound()
 
     return { 
         playRound, 

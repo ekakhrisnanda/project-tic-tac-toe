@@ -122,9 +122,7 @@ function GameController(
             return;
         } else if (board.updateCell(row, col, getActivePlayer().value)){
             const winner = checkWinner();
-
             if (winner) {
-                console.log(`${winner} wins!`);
                 return;
             }
             switchPlayerTurn();
@@ -132,10 +130,13 @@ function GameController(
         }
     };
 
+    const getGameOver = () => gameOver;
+
     return { 
         playRound, 
         getActivePlayer, 
-        getBoard: board.getBoard 
+        getBoard: board.getBoard,
+        getGameOver 
     };
 }
 
@@ -150,7 +151,12 @@ function GamePlay() {
         // get the newest version of the board
         const board = game.getBoard();
         const activePlayer = game.getActivePlayer();
-        playerTurnDisplay.textContent = `${activePlayer.name}'s turn`
+        const gameOver = game.getGameOver();
+        playerTurnDisplay.textContent = `${activePlayer.name}'s turn`;
+
+        if (gameOver) {
+            playerTurnDisplay.textContent = `${activePlayer.name} wins`;
+        }
 
         board.forEach((row, index) => {
             const rowString = document.createElement('div');

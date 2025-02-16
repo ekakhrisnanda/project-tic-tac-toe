@@ -52,6 +52,8 @@ function GameController(
         }
     ];
 
+    const getPlayers = () => players;
+
     let activePlayer = players[0];
 
     const switchPlayerTurn = () => {
@@ -134,7 +136,8 @@ function GameController(
 
     return { 
         playRound, 
-        getActivePlayer, 
+        getActivePlayer,
+        getPlayers, 
         getBoard: board.getBoard,
         getGameOver 
     };
@@ -193,15 +196,23 @@ function GamePlay() {
         return false;
     }
 
+    function changePlayerName() {
+        const playerOneName = prompt("Player One's name: ");
+        const playerTwoName = prompt("Player Two's name: ");
+        const players = game.getPlayers();
+        const activePlayer = game.getActivePlayer();
+
+        players[0].name = playerOneName;
+        players[1].name = playerTwoName;
+
+        playerTurnDisplay.textContent = `${activePlayer.name}'s turn`;
+    }
+
     boardDisplay.addEventListener('click', clickHandlerBoard);
     newGameButton.addEventListener('click', newGame);
+    changeNameButton.addEventListener('click', changePlayerName);
     
     updateDisplay();
 }
 
 GamePlay();
-
-// create 2 buttons, New Game and Change Player Name (player one and two)
-// New Game Button is just reset the game back to default
-// change player name when clicked display a modal to change the players name
-// store the value to variable and update the name of the player
